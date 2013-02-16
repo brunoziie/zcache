@@ -15,13 +15,13 @@ baseado no [Basket.js](http://addyosmani.github.com/basket.js)
 Incluindo um unico arquivo:
 
 ```javascript
-	ZCache.require('jquery.mim.js');
+ZCache.require('jquery.mim.js');
 ```
 
 Incluindo um arquivo sem salvar no cache:
 
 ```javascript
-	ZCache.require('jquery.mim.js', true);
+ZCache.require('jquery.mim.js', true);
 ```
 
 Incluindo multiplos arquivos
