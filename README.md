@@ -1,22 +1,22 @@
 # ZCache
 
-Plugin para carregamento e armazemento de arquivos Javascript em localStorage
+Plugin para carregamento e armazenamento de arquivos Javascript em localStorage
 baseado no [Basket.js](http://addyosmani.github.com/basket.js)
 
-O **ZCache** é indicado para o carregamento de bibliotecas de terceiros em seu projeto.
-Uma vez carregado o arquivo não será necessário fazer novamente o download do mesmo
-na proxima vez que a pagina for recarregada, salvo quando o arquivo ultrapassar o
-tempo de permanência no cache.
+O **ZCache** é indicado para o carregamento de bibliotecas de terceiros em seu projeto. 
+Uma vez carregado o arquivo não será necessário fazer novamente o download do mesmo na 
+proxima vez que a pagina for recarregada, salvo quando o arquivo ultrapassar o tempo de 
+permanência no cache.
 
-O ZCache é compativel com:
+
+O ZCache é compatível com:
 * Internet Explorer 8+
 * Mozilla Firefox 16+
 * Google Chrome 23+
 * Safari 5.1+
 * Android Browser 2.1+
 
-Em navegadores sem suporte a localStorage os arquivos são incluidos, mas não
-são salvos em cache.
+Em navegadores sem suporte a localStorage os arquivos são incluídos, mas não são salvos em cache.
 
 ---
 
@@ -27,7 +27,7 @@ são salvos em cache.
 
 #### Exemplos
 
-Incluindo um unico arquivo:
+Incluindo um único arquivo:
 
 ```javascript
 ZCache.require('jquery.mim.js');
@@ -39,13 +39,13 @@ Incluindo um arquivo sem salvar no cache:
 ZCache.require('jquery.mim.js', true);
 ```
 
-Incluindo multiplos arquivos
+Incluindo múltiplos arquivos
 
 ```javascript
 ZCache.require(['myscript1.js', 'myscript2.js', 'myscript3.js']);
 ```
 
-Incluindo multiplos arquivos sem salvar um determinado arquivo da lista no cache
+Incluindo múltiplos arquivos sem salvar um determinado arquivo da lista no cache
 ```javascript
 ZCache.require([{file : 'myscript1.js', noCache: true}, 'myscript2.js', 'myscript3.js']);
 ```
@@ -54,7 +54,7 @@ ZCache.require([{file : 'myscript1.js', noCache: true}, 'myscript2.js', 'myscrip
 
 #### Opções
 
-Para definir uma opção usa-se o metódo setOption
+Para definir uma opção usa-se o método setOption
 ```javascript
 ZCache.setOption('cacheDuration', 3600);
 ```
@@ -68,7 +68,7 @@ Define (em segundos) a duração de um arquivo em no cache **(default: 1800 segu
 ##### scriptsPath
 Define o caminho para o diretório onde estão armazenados os arquivos javascript **(default: vazio)**
 
-OBS: Caso use arquivos em muitos diretórios destintos aconselha-se não alterar essa opção
+OBS: Caso use arquivos em muitos diretórios distintos aconselha-se não alterar essa opção
 
 
 
