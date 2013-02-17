@@ -229,7 +229,16 @@
 						}
 					}
 				} else {
-					this.createScript(files);
+					for (i = 0; i < len; i += 1) {
+						current = files[i];
+
+						if (typeof current === 'object') {
+							ZCache.putInHead(options.scriptsPath + current.file);
+						} else if (typeof current === 'string') {
+							current = options.scriptsPath + current;
+							ZCache.putInHead(current);
+						}
+					}
 				}
 			},
 

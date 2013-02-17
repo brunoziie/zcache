@@ -3,12 +3,27 @@
 Plugin para carregamento e armazemento de arquivos Javascript em localStorage
 baseado no [Basket.js](http://addyosmani.github.com/basket.js)
 
+O **ZCache** é indicado para o carregamento de bibliotecas de terceiros em seu projeto.
+Uma vez carregado o arquivo não será necessário fazer novamente o download do mesmo
+na proxima vez que a pagina for recarregada, salvo quando o arquivo ultrapassar o
+tempo de permanência no cache.
+
+O ZCache é compativel com:
+* Internet Explorer 8+
+* Mozilla Firefox 16+
+* Google Chrome 23+
+* Safari 5.1+
+* Android Browser 2.1+
+
+Em navegadores sem suporte a localStorage os arquivos são incluidos mas não
+são salvos em cache.
+
+---
+
 #### Uso 
 ```
 <script type="text/javascript" src="zcache.min.js"></script>
 ```
-
-
 
 #### Exemplos
 
