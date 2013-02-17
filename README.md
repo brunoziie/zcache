@@ -15,7 +15,7 @@ O ZCache é compativel com:
 * Safari 5.1+
 * Android Browser 2.1+
 
-Em navegadores sem suporte a localStorage os arquivos são incluidos mas não
+Em navegadores sem suporte a localStorage os arquivos são incluidos, mas não
 são salvos em cache.
 
 ---
