@@ -31,6 +31,13 @@
 		},
 
 		ZCache = {
+
+			/**
+			 * Armazena a fila de arquivos a serem carregados
+			 * @type {Array}
+			 */
+			stack : [],
+
 			/**
 			 * Verifica se o navegador é compatível com o LocalStorage
 			 * @return {Boolean} Verdadeiro caso compatível
@@ -114,8 +121,9 @@
 			 * @return {void}
 			 */
 			removeFromCache : function (file) {
-				if (this.hasCache(this.scriptsPath + file)) {
-					global.localStorage.removeItem(this.scriptsPath + file);
+				var path = options.scriptsPath + file;
+				if (this.hasCache(path)) {
+					global.localStorage.removeItem(path);
 				}
 			},
 
@@ -141,7 +149,6 @@
 									created : new Date()
 								});
 							}
-							that.putInHead(xhr.responseText);
 						} else {
 							if (options.debug === true) {
 								console.log('"' + path + '"" not loaded');
@@ -150,7 +157,52 @@
 					}
 				};
 
+				that.putInHead(path, true);
 				xhr.send();
+			},
+
+			/**
+			 * Adiciona uma requisicão a fila de carregamento
+			 * @param {Object} fileData Dados do arquivo de script que será adicionado a fila de carregamento
+			 * @return {void}
+			 */
+			putInStack : function (fileData) {
+				this.stack.push(fileData);
+			},
+
+			/**
+			 * Processa a fila de carregamendo de arquivos
+			 * @param {Function} callback Função que deve ser executada após o processamento da fila
+			 * @return {void}
+			 */
+			processStack : function (callback) {
+				var that = this,
+					current,
+					script,
+					content;
+
+				if (this.stack.length > 0) {
+					script = document.createElement('script');
+					current = this.stack[0];
+					content = current.content;
+					this.stack.shift();
+
+					if (current.viaSrc) {
+						script.defer = true;
+						script.src = content;
+						script.onload = function () {
+							that.processStack(callback);
+						};
+						global.document.head.appendChild(script);
+					} else {
+						script.text = content;
+						global.document.head.appendChild(script);
+						that.processStack(callback);
+					}
+				} else {
+					callback = callback || function () {};
+					callback();
+				}
 			},
 
 			/**
@@ -160,32 +212,30 @@
 			 * @return {void}
 			 */
 			putInHead : function (content, viaSrc) {
-				var script = global.document.createElement('script');
 				viaSrc = viaSrc || false;
-
-				if (viaSrc) {
-					script.src = content;
-				} else {
-					script.text = content;
-				}
-
-				global.document.head.appendChild(script);
+				var data = {
+						content : content,
+						viaSrc : viaSrc
+					};
+				this.putInStack(data);
 			}
 		},
 
 		API = {
 			/**
 			 * Requisita o(s) arquivo(s) de script
-			 * @param  {Mixed}   path    String com o nome do arquivo ou Array com a lista de arquivos
-			 * @param  {Integer} noCache Caso esteja carregando apenas um arquivo, define se o arquivo não será salvo no cache
+			 * @param  {Mixed}    path     String com o nome do arquivo ou Array com a lista de arquivos
+			 * @param  {Integer}  noCache  Caso esteja carregando apenas um arquivo, define se o arquivo não será salvo no cache
+			 * @param  {Function} callback Função que deve ser executada após o requisitar os arquivos
 			 * @return {void}
 			 */
-			require : function (path, noCache) {
+			require : function (path, noCache, callback) {
 				var i,
 					ls,
 					len,
 					current,
 					cached,
+					interval,
 					files = [];
 
 				noCache = noCache || false;
@@ -200,6 +250,7 @@
 
 				if (ZCache.isCompatible()) {
 					for (i = 0; i < len; i += 1) {
+
 						current = files[i];
 
 						if (typeof current === 'object') {
@@ -227,6 +278,8 @@
 								}
 							}
 						}
+
+
 					}
 				} else {
 					for (i = 0; i < len; i += 1) {
@@ -240,6 +293,8 @@
 						}
 					}
 				}
+
+				ZCache.processStack(callback);
 			},
 
 			/**
