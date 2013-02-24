@@ -114,7 +114,7 @@
 			 * @return {void}
 			 */
 			removeFromCache : function (file) {
-				if (this.hasCache(file)) {
+				if (this.hasCache(scriptsPath + file)) {
 					global.localStorage.removeItem(file);
 				}
 			},
